@@ -1,3 +1,5 @@
+import os
+
 import argparse
 
 import pandas as pd
@@ -11,9 +13,11 @@ def main(params):
     port = params.port
     db = params.db
     table_name = params.table_name
+    url = params.url
     csv_name = 'output.csv'
 
     # download the csv
+    os.system(f"weget {url} -O {csv_name}")
 
     engine = create_engine(f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}")
 
