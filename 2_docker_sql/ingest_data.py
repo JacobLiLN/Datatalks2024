@@ -46,6 +46,10 @@ def main(params):
         t_end = time()
         print('inserted another chunk, took {} seconds'.format(t_end-t_start))
 
+    os.system(f"wget https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv -O zone.csv")
+    df_z = pd.read_csv('zone.csv')
+    df_z.to_sql(name='taxi+_zone_lookup',con=engine,if_exists='replace')
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Ingest CSV data to Postgres')
