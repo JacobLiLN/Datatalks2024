@@ -14,14 +14,18 @@ def main(params):
     db = params.db
     table_name = params.table_name
     url = params.url
-    csv_name = 'output.csv'
+    
+    if url.endswith('.csv.gz'):
+        csv_name = 'output.csv.gz'
+    else:
+        csv_name = 'output.csv'
 
     # download the csv
-    os.system(f"weget {url} -O {csv_name}")
+    os.system(f"wget {url} -O {csv_name}")
 
     engine = create_engine(f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}")
 
-    print(pd.io.sql.get_schema(df, name=table_name, con=engine))
+    # print(pd.io.sql.get_schema(df, name=table_name, con=engine))
 
     # Read the whole csv file rather than only first 100 lines of the original data
     df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
@@ -49,14 +53,14 @@ if __name__ == '__main__':
     # user, password, host, port, database name, table name
     # url of the csv
 
-    parser.add_argument('user',help='user name for postgres')
-    parser.add_argument('password',help='user password for postgres')
-    parser.add_argument('host',help='host for postgres')
-    parser.add_argument('port',help='port number for postgres')
-    parser.add_argument('database name',help='database name for postgres')
-    parser.add_argument('table name',help='name of table where we will write the results to')
-    parser.add_argument('url',help='url of the csv file')
+    parser.add_argument('--user',required=True,help='user name for postgres')
+    parser.add_argument('--password',required=True,help='user password for postgres')
+    parser.add_argument('--host',required=True,help='host for postgres')
+    parser.add_argument('--port',required=True,help='port number for postgres')
+    parser.add_argument('--db',required=True,help='database name for postgres')
+    parser.add_argument('--table_name',required=True,help='name of table where we will write the results to')
+    parser.add_argument('--url',required=True,help='url of the csv file')
 
     args = parser.parse_args()
-    print(args.accumulate(args.integers))
     main(args)
+        
