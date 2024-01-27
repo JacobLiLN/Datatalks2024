@@ -5,15 +5,38 @@ docker run -e POSTGRES_USER=root \
            -p 5432:5432 \
            postgres
 
-docker run --name=pg-database
-           -e POSTGRES_USER=root \
+docker run -e POSTGRES_USER=root \
            -e POSTGRES_PASSWORD=root \
            -e POSTGRES_DB=ny_taxi_db \
            -p 5432:5432 \
-           --network=container_network
-           postgres
+           -v /workspaces/Datatalks2024/01-docker-terraform/Homework/data:/var/lib/postgresql/data \
+           --network container_network \
+           --name pg-database \
+           -d postgres
 
-docker run --name pgadmin_container -p 5050:80 \
+           --network=container_network \
+
+docker run --name pgadmin -p 5050:80 \
            -e PGADMIN_DEFAULT_EMAIL=admin@admin.com \
            -e PGADMIN_DEFAULT_PASSWORD=root \
-           dpage/pgadmin4
+           --network container_network \
+           -d dpage/pgadmin4
+
+docker network create container_network
+
+URL_t="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-09.csv.gz"
+
+URL_z="https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv"
+
+python Data_Ingestion.py \
+  --user=root \
+  --password=root \
+  --host=localhost \
+  --port=5432 \
+  --db=ny_taxi_db \
+  --taxi_table=green_taxi_data \
+  --zone_table=ny_zones \
+  --url_taxi=${URL_t} \
+  --url_zone=${URL_z}
+
+  1
