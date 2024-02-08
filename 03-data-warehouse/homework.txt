@@ -1,4 +1,4 @@
-	CREATE OR REPLACE EXTERNAL TABLE `global-sign-411702.homework_ds.green_trip_2022`
+CREATE OR REPLACE EXTERNAL TABLE `global-sign-411702.homework_ds.green_trip_2022`
 OPTIONS (
   format = 'PARQUET',
   uris = ['gs://green_taxi_hw/green_tripdata_2022-*.parquet']
