@@ -1,0 +1,64 @@
+	CREATE OR REPLACE EXTERNAL TABLE `global-sign-411702.homework_ds.green_trip_2022`
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://green_taxi_hw/green_tripdata_2022-*.parquet']
+	CREATE OR REPLACE EXTERNAL TABLE `global-sign-411702.homework_ds.green_trip_2022`
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://green_taxi_hw/green_tripdata_2022-*.parquet']
+);
+
+
+CREATE OR REPLACE TABLE `global-sign-411702.homework_ds.green_2022_nonpartitioned_data`
+AS SELECT * FROM `global-sign-411702.homework_ds.green_trip_2022`;
+
+select * from `global-sign-411702.homework_ds.green_trip_2022`;
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_trip_2022`;
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_2022_nonpartitioned_data`;
+
+CREATE OR REPLACE TABLE `global-sign-411702.homework_ds.green_2022_partitioned_data`
+PARTITION BY DATE(lpep_pickup_datetime)
+CLUSTER BY PUlocationID AS (
+  SELECT * FROM `global-sign-411702.homework_ds.green_trip_2022`
+);
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_2022_nonpartitioned_data`
+where DATE(lpep_pickup_datetime) between '2022-06-01' and '2022-06-30';
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_2022_partitioned_data`
+where DATE(lpep_pickup_datetime) between '2022-06-01' and '2022-06-30';
+
+);
+
+
+CREATE OR REPLACE TABLE `global-sign-411702.homework_ds.green_2022_nonpartitioned_data`
+AS SELECT * FROM `global-sign-411702.homework_ds.green_trip_2022`;
+
+select * from `global-sign-411702.homework_ds.green_trip_2022`;
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_trip_2022`;
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_2022_nonpartitioned_data`;
+
+CREATE OR REPLACE TABLE `global-sign-411702.homework_ds.green_2022_partitioned_data`
+PARTITION BY DATE(lpep_pickup_datetime)
+CLUSTER BY PUlocationID AS (
+  SELECT * FROM `global-sign-411702.homework_ds.green_trip_2022`
+);
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_2022_nonpartitioned_data`
+where DATE(lpep_pickup_datetime) between '2022-06-01' and '2022-06-30';
+
+select count(distinct(PULocationID))
+from `global-sign-411702.homework_ds.green_2022_partitioned_data`
+where DATE(lpep_pickup_datetime) between '2022-06-01' and '2022-06-30';
+
